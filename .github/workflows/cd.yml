@@ -7,6 +7,7 @@ permissions:
   id-token: write
 jobs:
   deploy-dev:
+    if: vars.DEV_DEPLOY_ENABLED == 'true'
     runs-on: ubuntu-latest
     environment: dev
     steps:
@@ -27,6 +28,7 @@ jobs:
       - run: aws s3 sync dist/ "s3://${{ vars.S3_BUCKET }}" --delete
   deploy-prod:
     needs: deploy-dev
+    if: vars.PROD_DEPLOY_ENABLED == 'true'
     runs-on: ubuntu-latest
     environment: prod
     steps:

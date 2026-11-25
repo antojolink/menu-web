@@ -13,3 +13,5 @@ Usa Node 24. Abre `http://localhost:4321/tacos-pepe` en el servidor Astro local 
 Para cargar el seed con Docker Desktop abierto: en `sass-core`, ejecuta `docker compose up --build -d` y luego `docker compose exec api npm run seed`.
 
 En S3/CloudFront, las rutas `/<slug>` deben servir `/index.html` (SPA fallback) y el backend debe permitir el origen del menú en CORS.
+
+El CD espera las variables de repositorio `DEV_DEPLOY_ENABLED=true` y `PROD_DEPLOY_ENABLED=true`. Cada environment necesita `AWS_ROLE_ARN`, `AWS_REGION`, `S3_BUCKET` y `API_URL`; Prod necesita también `CLOUDFRONT_ID` y aprobación requerida antes de activar su bandera.
