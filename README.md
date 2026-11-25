@@ -8,7 +8,7 @@ npm ci
 npm run dev
 ```
 
-Usa Node 24. Abre `http://localhost:4321/?slug=tacos-pepe` en el servidor Astro local con `sass-core` ejecutándose en `http://localhost:3000` y su seed cargado. La ruta final publicada es `https://menu.<dominio>/tacos-pepe`. `PUBLIC_API_URL` apunta a la API correspondiente al ambiente. `npm test` ejecuta Vitest; `npm run build` crea `dist/` para S3.
+Usa Node 24. Abre `http://localhost:4321/tacos-pepe` en el servidor Astro local con `sass-core` ejecutándose en `http://localhost:3000` y su seed cargado. La ruta publicada será `https://menu.<dominio>/tacos-pepe`. `PUBLIC_API_URL` apunta a la API correspondiente al ambiente. `npm test` ejecuta Vitest; `npm run build` crea `dist/` para S3.
 
 Para cargar el seed con Docker Desktop abierto: en `sass-core`, ejecuta `docker compose up --build -d` y luego `docker compose exec api npm run seed`.
 
