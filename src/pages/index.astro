@@ -1,0 +1,42 @@
+---
+import '../styles.css';
+const apiUrl = import.meta.env.PUBLIC_API_URL || 'http://localhost:3000';
+---
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f7f4ee" />
+    <title>Menú · AntojoLink</title>
+  </head>
+  <body>
+    <main id="app" aria-live="polite"><p class="status">Cargando menú…</p></main>
+    <script define:vars={{ apiUrl }}>
+      window.ANTOJOLINK_API_URL = apiUrl;
+    </script>
+    <script>
+      import { restaurantSlug, loadMenu } from '../lib/menu.js';
+      import { renderMenu } from '../lib/renderMenu.js';
+      const app = document.querySelector('#app');
+      const slug = restaurantSlug(location.pathname) || new URLSearchParams(location.search).get('slug');
+
+      function el(tag, className, text) {
+        const element = document.createElement(tag);
+        if (className) element.className = className;
+        if (text !== undefined) element.textContent = text;
+        return element;
+      }
+
+      if (!slug) {
+        app.replaceChildren(el('p', 'status', 'Abre el enlace de un restaurante para ver su menú.'));
+      } else {
+        loadMenu(window.ANTOJOLINK_API_URL, slug)
+          .then(result => result.kind === 'missing'
+            ? app.replaceChildren(el('p', 'status', 'Restaurante no encontrado. Revisa el enlace del QR.'))
+            : renderMenu(app, result.data))
+          .catch(() => app.replaceChildren(el('p', 'status', 'No se pudo cargar el menú. Comprueba tu conexión e inténtalo de nuevo.')));
+      }
+    </script>
+  </body>
+</html>
