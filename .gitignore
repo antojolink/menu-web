@@ -3,4 +3,5 @@ dist/
 .astro/
 coverage/
 .env
+.env.local
 .env.*.local
