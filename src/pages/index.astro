@@ -3,12 +3,18 @@ import '../styles.css';
 const apiUrl = import.meta.env.PUBLIC_API_URL || 'http://localhost:3000';
 ---
 <!doctype html>
-<html lang="es">
+<html lang="es" data-template="trattoria">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#f7f4ee" />
+    <meta name="theme-color" content="#faf5ec" />
     <title>Menú · AntojoLink</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400&family=DM+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Lora:ital,wght@0,400;0,500;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <main id="app" aria-live="polite"><p class="status">Cargando menú…</p></main>
