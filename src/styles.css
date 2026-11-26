@@ -1,1 +1,835 @@
-:root{font-family:Inter,system-ui,-apple-system,sans-serif;color:#28201b;background:#f7f4ee;--accent:#bd4b2b}*{box-sizing:border-box}body{margin:0}main{max-width:760px;min-height:100vh;margin:auto;background:#fff;box-shadow:0 12px 40px #2f210b0c}.hero{background:var(--accent);color:#fff;padding:42px 28px 52px;border-radius:0 0 32px 32px}.logo{max-width:90px;max-height:90px;object-fit:contain;background:#fff;border-radius:16px;padding:8px}.eyebrow{font-size:.72rem;letter-spacing:.2em;font-weight:800;margin-top:24px}.hero h1{font-size:clamp(2rem,8vw,3.5rem);margin:10px 0}.tagline{opacity:.9;margin:0}.content{padding:24px 20px 48px}.category{margin-bottom:32px}.category h2{font-size:1.5rem;border-bottom:2px solid #eee4da;padding-bottom:12px}.items{display:grid;gap:12px}.item{display:flex;justify-content:space-between;gap:18px;padding:18px;border:1px solid #eee8df;border-radius:20px;box-shadow:0 4px 16px #29160008}.item-copy{min-width:0}.item h3{margin:0 0 6px;font-size:1.08rem}.description{color:#6d635b;line-height:1.5;margin:0 0 10px}.price{display:inline-block;color:var(--accent);margin-right:10px}.sold-out{display:inline-block;background:#f1e8e2;color:#654638;padding:4px 9px;border-radius:100px;font-size:.8rem;font-weight:700}.product-image{width:104px;height:104px;object-fit:cover;border-radius:14px;flex-shrink:0}.status{text-align:center;padding:80px 24px;color:#675a50}footer{text-align:center;padding:20px;color:#86796e;font-size:.8rem}@media(max-width:420px){.product-image{width:82px;height:82px}.item{padding:14px}}
+:root {
+  --accent: #9b2226;
+  --paper: #faf5ec;
+  --paper-elevated: #f5eee2;
+  --nav-bg: rgba(250, 245, 236, 0.95);
+  --ink: #231f20;
+  --ink-muted: rgba(35, 31, 32, 0.66);
+  --rule: rgba(35, 31, 32, 0.14);
+  --accent-text: #faf5ec;
+  --font-display: 'Cormorant Garamond', 'Didot', 'Baskerville', Georgia, serif;
+  --font-body: 'Lora', 'Baskerville', Georgia, serif;
+  --font-mono: 'DM Mono', 'SF Mono', Menlo, ui-monospace, monospace;
+  --radius: 4px;
+}
+
+/* Template 1: Osteria Clásica (Trattoria) */
+[data-template='trattoria'] {
+  --paper: color-mix(in srgb, var(--accent) 3%, #faf5ec);
+  --paper-elevated: color-mix(in srgb, var(--accent) 6%, #f4ede0);
+  --nav-bg: color-mix(in srgb, var(--paper) 94%, transparent);
+  --ink: #231f20;
+  --ink-muted: rgba(35, 31, 32, 0.66);
+  --rule: rgba(35, 31, 32, 0.15);
+  --accent-text: #faf5ec;
+  --font-display: 'Cormorant Garamond', 'Didot', 'Baskerville', Georgia, serif;
+  --font-body: 'Lora', 'Baskerville', Georgia, serif;
+  --radius: 3px;
+}
+
+/* Template 2: Artesanal Mexicana (Maíz) */
+[data-template='maiz'] {
+  --paper: color-mix(in srgb, var(--accent) 3%, #f4efe4);
+  --paper-elevated: color-mix(in srgb, var(--accent) 6%, #ece5d5);
+  --nav-bg: color-mix(in srgb, var(--paper) 94%, transparent);
+  --ink: #1e1c1a;
+  --ink-muted: rgba(30, 28, 26, 0.66);
+  --rule: rgba(30, 28, 26, 0.14);
+  --accent-text: #f4efe4;
+  --font-display: 'Fraunces', 'Iowan Old Style', Palatino, Georgia, serif;
+  --font-body: 'Plus Jakarta Sans', 'Avenir Next', system-ui, sans-serif;
+  --radius: 4px;
+}
+
+/* Template 3: Luminosa & Brunch (Waffle) */
+[data-template='waffle'] {
+  --paper: color-mix(in srgb, var(--accent) 3%, #fffbf2);
+  --paper-elevated: color-mix(in srgb, var(--accent) 7%, #fcf4e3);
+  --nav-bg: color-mix(in srgb, var(--paper) 95%, transparent);
+  --ink: #2c1e16;
+  --ink-muted: rgba(44, 30, 22, 0.66);
+  --rule: rgba(44, 30, 22, 0.12);
+  --accent-text: #fffbf2;
+  --font-display: 'Fraunces', 'Baskerville', Georgia, serif;
+  --font-body: 'Plus Jakarta Sans', 'Avenir Next', system-ui, sans-serif;
+  --radius: 14px;
+}
+
+/* Template 4: Nocturna & Barra */
+[data-template='nocturno'] {
+  --paper: #14110f;
+  --paper-elevated: #1c1815;
+  --nav-bg: rgba(20, 17, 15, 0.95);
+  --ink: #f2eae1;
+  --ink-muted: rgba(242, 234, 225, 0.65);
+  --rule: color-mix(in srgb, var(--accent) 26%, transparent);
+  --accent-text: #14110f;
+  --font-display: 'Cormorant Garamond', 'Optima', Georgia, serif;
+  --font-body: 'Lora', 'Iowan Old Style', Georgia, serif;
+  --radius: 3px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--paper-elevated);
+  color: var(--ink);
+  font-family: var(--font-body);
+}
+
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+main#app {
+  min-height: 100vh;
+}
+
+.menu-shell {
+  min-height: 100vh;
+  padding: 0 0 92px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.menu-shell.has-fixed-nav {
+  padding-top: 52px;
+}
+
+/* Fixed Category Navbar */
+.cat-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 40;
+  background: var(--nav-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--rule);
+}
+
+.cat-nav-inner {
+  max-width: 740px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+}
+
+.cat-nav-top {
+  flex-shrink: 0;
+  background: transparent;
+  border: 0;
+  border-right: 1px solid var(--rule);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  padding: 12px 12px 12px 4px;
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+.cat-nav-list {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  flex: 1;
+}
+
+.cat-nav-list::-webkit-scrollbar {
+  display: none;
+}
+
+.cat-nav-btn {
+  flex-shrink: 0;
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  color: var(--ink-muted);
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 14px 2px 12px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.cat-nav-btn.is-active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+  font-weight: 600;
+}
+
+/* Printed Sheet Container */
+.menu-sheet {
+  width: 100%;
+  max-width: 740px;
+  min-height: calc(100vh - 52px);
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  color: var(--ink);
+  border-left: 1px solid var(--rule);
+  border-right: 1px solid var(--rule);
+  position: relative;
+}
+
+[data-template='trattoria'] .menu-sheet {
+  box-shadow: inset 0 0 0 6px var(--paper), inset 0 0 0 7px color-mix(in srgb, var(--accent) 28%, transparent);
+}
+
+.maiz-top-bar {
+  height: 5px;
+  background: var(--accent);
+  width: 100%;
+}
+
+/* Header / Cover */
+.hero {
+  padding: 36px 28px 26px;
+  text-align: center;
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+[data-template='maiz'] .hero {
+  text-align: left;
+  align-items: flex-start;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+[data-template='waffle'] .hero-copy {
+  border: 1px solid color-mix(in srgb, var(--accent) 32%, transparent);
+  background: color-mix(in srgb, var(--accent) 5%, transparent);
+  border-radius: 999px 999px 14px 14px;
+  padding: 20px 32px 16px;
+}
+
+.logo {
+  max-width: 76px;
+  max-height: 76px;
+  object-fit: contain;
+  border-radius: var(--radius);
+  border: 1px solid var(--rule);
+  padding: 6px;
+  background: var(--paper);
+}
+
+.eyebrow {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.restaurant-title {
+  margin: 6px 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 6vw, 2.85rem);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: 0.02em;
+}
+
+[data-template='nocturno'] .restaurant-title {
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: clamp(1.75rem, 5.5vw, 2.5rem);
+}
+
+.tagline {
+  margin: 6px 0 0;
+  font-size: 0.85rem;
+  color: var(--ink-muted);
+  font-style: italic;
+}
+
+/* Content & Toolbar */
+.content {
+  padding: 16px 24px 40px;
+}
+
+.menu-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 0 14px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.toolbar-hint {
+  font-size: 0.76rem;
+  color: var(--ink-muted);
+}
+
+.toolbar-toggle {
+  flex-shrink: 0;
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 0.74rem;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+/* Category Sections */
+.category {
+  padding-top: 30px;
+  scroll-margin-top: 66px;
+}
+
+.category-head {
+  margin-bottom: 12px;
+}
+
+[data-template='trattoria'] .category-head {
+  text-align: center;
+}
+
+[data-template='maiz'] .category-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 8px;
+}
+
+[data-template='nocturno'] .category-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+[data-template='nocturno'] .category-head::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
+}
+
+.category-index {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.24em;
+  color: var(--accent);
+}
+
+.category-title {
+  margin: 2px 0 0;
+  font-family: var(--font-display);
+  font-size: 1.65rem;
+  font-weight: 600;
+}
+
+[data-template='nocturno'] .category-title {
+  font-size: 1.05rem;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--accent);
+}
+
+/* Expandable Dishes */
+.items {
+  display: flex;
+  flex-direction: column;
+}
+
+.item {
+  border-bottom: 1px solid var(--rule);
+  padding: 12px 0;
+}
+
+.item.is-unavailable {
+  opacity: 0.58;
+}
+
+.item-head {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.item-thumb {
+  width: 44px;
+  height: 44px;
+  object-fit: cover;
+  border-radius: var(--radius);
+  border: 1px solid var(--rule);
+  flex-shrink: 0;
+}
+
+.item-head-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.item-title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.item-name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.12rem;
+  font-weight: 600;
+  color: var(--ink);
+  min-width: 0;
+}
+
+.dotted-leader {
+  flex: 1;
+  border-bottom: 1px dotted var(--ink);
+  opacity: 0.26;
+  margin-bottom: 4px;
+  min-width: 12px;
+}
+
+.title-spacer {
+  flex: 1;
+}
+
+.price {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+[data-template='trattoria'] .price {
+  color: var(--ink);
+}
+
+.qty-badge {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.7rem;
+  font-weight: 600;
+  background: var(--accent);
+  color: var(--accent-text);
+  border-radius: 999px;
+  padding: 1px 7px;
+  flex-shrink: 0;
+}
+
+.item-preview {
+  margin: 3px 0 0;
+  font-size: 0.82rem;
+  color: var(--ink-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.item-chevron {
+  flex-shrink: 0;
+  font-size: 0.82rem;
+  color: var(--ink-muted);
+}
+
+/* Expanded Dish Body */
+.item-body {
+  padding-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.item-body.has-photo {
+  display: grid;
+  grid-template-columns: 156px 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.product-image {
+  width: 100%;
+  height: 118px;
+  object-fit: cover;
+  border-radius: var(--radius);
+  border: 1px solid var(--rule);
+}
+
+.item-copy {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.description {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.58;
+  color: var(--ink-muted);
+}
+
+.item-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.add-btn {
+  background: transparent;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  color: var(--accent);
+  font-family: var(--font-body);
+  font-size: 0.74rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  padding: 7px 12px;
+  cursor: pointer;
+}
+
+.minimize-btn {
+  background: transparent;
+  border: 0;
+  color: var(--ink-muted);
+  font-size: 0.76rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.qty-stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 2px 4px;
+}
+
+.qty-btn {
+  width: 28px;
+  height: 28px;
+  border: 0;
+  background: transparent;
+  color: var(--accent);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.qty-val {
+  min-width: 20px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+
+.sold-out {
+  display: inline-block;
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  color: var(--accent);
+  padding: 2px 8px;
+  border-radius: var(--radius);
+  font-size: 0.72rem;
+  font-style: italic;
+  flex-shrink: 0;
+}
+
+/* Floating Order Bar */
+.order-bar-wrap {
+  position: fixed;
+  bottom: 14px;
+  left: 0;
+  right: 0;
+  z-index: 40;
+  display: flex;
+  justify-content: center;
+  padding: 0 14px;
+  pointer-events: none;
+}
+
+.order-bar {
+  pointer-events: auto;
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 12px 18px;
+  border-radius: var(--radius);
+  border: 1px solid var(--accent);
+  background: var(--ink);
+  color: var(--paper);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.24);
+  cursor: pointer;
+}
+
+[data-template='nocturno'] .order-bar {
+  background: var(--accent);
+  color: var(--paper);
+}
+
+.order-bar-left,
+.order-bar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.order-count {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.78rem;
+  font-weight: 700;
+  background: var(--accent);
+  color: var(--accent-text);
+  border-radius: 999px;
+  padding: 2px 9px;
+}
+
+[data-template='nocturno'] .order-count {
+  background: var(--paper);
+  color: var(--accent);
+}
+
+.order-label {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  letter-spacing: 0.02em;
+}
+
+.order-total {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.order-chevron {
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+
+/* Order Drawer */
+.order-drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(0, 0, 0, 0.52);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0;
+}
+
+.order-drawer-backdrop[hidden] {
+  display: none;
+}
+
+.order-drawer {
+  width: 100%;
+  max-width: 460px;
+  max-height: 82vh;
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  border-radius: 16px 16px 0 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.order-drawer-head {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.order-drawer-eyebrow {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.order-drawer-title {
+  margin: 2px 0 0;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+}
+
+.order-drawer-body {
+  padding: 0 20px;
+  overflow-y: auto;
+}
+
+.order-empty {
+  padding: 36px 10px;
+  text-align: center;
+  font-style: italic;
+  color: var(--ink-muted);
+  font-size: 0.9rem;
+}
+
+.order-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.order-row-info {
+  min-width: 0;
+}
+
+.order-row-name {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1rem;
+}
+
+.order-row-sub {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  color: var(--ink-muted);
+  margin-top: 2px;
+}
+
+.order-drawer-foot {
+  padding: 16px 20px;
+  border-top: 1px solid var(--rule);
+  background: color-mix(in srgb, var(--accent) 6%, var(--paper));
+}
+
+.order-sum-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.order-sum-label {
+  font-size: 0.85rem;
+  color: var(--ink-muted);
+}
+
+.order-sum-total {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 1.1rem;
+  color: var(--accent);
+}
+
+.order-drawer-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.order-btn-ghost {
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  color: var(--ink-muted);
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.order-btn-primary {
+  flex: 1;
+  text-align: center;
+  text-decoration: none;
+  background: var(--accent);
+  color: var(--accent-text);
+  border: 0;
+  border-radius: var(--radius);
+  font-family: var(--font-body);
+  font-size: 0.76rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+  padding: 10px 14px;
+  cursor: pointer;
+}
+
+/* Status & Footer */
+.status {
+  text-align: center;
+  padding: 72px 24px;
+  color: var(--ink-muted);
+}
+
+.menu-footer {
+  text-align: center;
+  padding: 20px 24px 32px;
+  border-top: 1px solid var(--rule);
+  color: var(--ink-muted);
+  font-size: 0.78rem;
+}
+
+@media (max-width: 520px) {
+  .content {
+    padding: 14px 16px 36px;
+  }
+  .hero {
+    padding: 28px 18px 22px;
+  }
+  .item-body.has-photo {
+    grid-template-columns: 1fr;
+  }
+  .product-image {
+    height: 170px;
+  }
+}
+
+@media (min-width: 640px) {
+  .order-drawer-backdrop {
+    align-items: center;
+    padding: 16px;
+  }
+  .order-drawer {
+    border-radius: 14px;
+  }
+}
